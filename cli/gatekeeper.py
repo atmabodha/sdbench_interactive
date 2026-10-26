@@ -3,9 +3,9 @@ import sys
 
 import dotenv
 
-from sdbench import case_data
-from sdbench.config import SDBenchConfig
-from sdbench.gatekeeper import order_test, order_tests
+import case_data
+from config import SDBenchConfig
+from gatekeeper import order_test, order_tests
 
 
 def main():

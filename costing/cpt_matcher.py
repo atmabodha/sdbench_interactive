@@ -10,11 +10,11 @@ from fuzzywuzzy import fuzz  # pyright: ignore[reportMissingTypeStubs]
 import numpy as np
 from openai import OpenAI
 import pandas as pd
-from sdbench.config import CostingConfig
-from sdbench.models import create_chat_completion
+from config import CostingConfig
+from models import create_chat_completion
 
 if TYPE_CHECKING:
-    from sdbench.costing.cost_types import CostMethodEstimate
+    from costing.cost_types import CostMethodEstimate
 
 
 class CPTSearchResult(TypedDict):

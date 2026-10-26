@@ -2,8 +2,8 @@ import argparse
 import json
 import os
 
-from sdbench.config import HarnessConfig
-from sdbench.reporting import (
+from config import HarnessConfig
+from reporting import (
     DEFAULT_REPORT_CASE_SETS,
     build_accuracy_cost_report,
     load_results_from_json,

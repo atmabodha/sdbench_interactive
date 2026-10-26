@@ -12,7 +12,7 @@ from pathlib import Path
 import sys
 from typing import TYPE_CHECKING, Any
 
-from sdbench.config import HarnessConfig
+from config import HarnessConfig
 
 if TYPE_CHECKING:
     from azure.storage.blob import BlobServiceClient

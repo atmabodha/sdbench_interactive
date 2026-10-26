@@ -18,11 +18,12 @@ from typing import Any, Callable, Iterable
 import dotenv
 from openai import OpenAI
 
-from sdbench import agents, models
-from sdbench.agents import baseline as baselineAgent
-from sdbench.config import AgentConfig, SDBenchConfig, get_sdbench_config
-from sdbench.gatekeeper import OrderTestResponse, TestRunnerResponse
-from sdbench.models import ChatCompletionMessageParam, ModelCreateChatCompletion
+import agents
+from agents import baseline as baselineAgent
+from config import AgentConfig, SDBenchConfig, get_sdbench_config
+from gatekeeper import OrderTestResponse, TestRunnerResponse
+import models
+from models import ChatCompletionMessageParam, ModelCreateChatCompletion
 
 # Prefix constants matching the standard SDBench Gatekeeper conventions.
 QUESTION_PREFIX = "Question for the patient: "
@@ -709,6 +710,10 @@ def resolveModelArgs(
   if apiKey:
     if modelName.startswith(models.LOCAL_MODEL_PREFIX):
       mergedArgs["local_model_api_key"] = apiKey
+    elif apiKey.startswith("sk-or-"):
+      os.environ["OPENROUTER_API_KEY"] = apiKey
+    elif not os.getenv("OPENROUTER_API_KEY"):
+      os.environ["OPENAI_API_KEY"] = apiKey
     else:
       os.environ["OPENROUTER_API_KEY"] = apiKey
 
@@ -719,6 +724,39 @@ def resolveModelArgs(
       os.environ["SDBENCH_LOCAL_BASE_URL"] = baseUrl
 
   return mergedArgs
+
+
+def validateModelCredentials(modelName: str, modelArgs: dict[str, Any] | None = None) -> None:
+  """Validate that required API credentials or endpoints are configured for the chosen model."""
+  effectiveArgs = modelArgs or {}
+
+  # Local models require a base URL via CLI/model args or SDBENCH_LOCAL_BASE_URL.
+  if modelName.startswith(models.LOCAL_MODEL_PREFIX):
+    localBaseUrl = effectiveArgs.get("local_model_base_url") or os.getenv("SDBENCH_LOCAL_BASE_URL")
+    if not localBaseUrl:
+      raise ValueError(
+        f"Local model '{modelName}' requires '--base-url <url>' or SDBENCH_LOCAL_BASE_URL in .env."
+      )
+    return
+
+  # Forced Azure OpenAI requires both AZURE_OPENAI_API_KEY and AZURE_OPENAI_ENDPOINT.
+  forceAzure = os.getenv("SDBENCH_FORCE_AZURE", "0").lower() in ("1", "true")
+  if forceAzure:
+    if not os.getenv("AZURE_OPENAI_API_KEY") or not os.getenv("AZURE_OPENAI_ENDPOINT"):
+      raise ValueError(
+        "SDBENCH_FORCE_AZURE is enabled, but AZURE_OPENAI_API_KEY or AZURE_OPENAI_ENDPOINT is not set."
+      )
+    return
+
+  # Standard models accept either OPENROUTER_API_KEY or OPENAI_API_KEY.
+  apiKeyVar = str(effectiveArgs.get("openrouter_api_key_var", "OPENROUTER_API_KEY"))
+  hasOpenRouterKey = bool(os.getenv(apiKeyVar) or os.getenv("OPENROUTER_API_KEY"))
+  hasOpenAiKey = bool(os.getenv("OPENAI_API_KEY"))
+  if not hasOpenRouterKey and not hasOpenAiKey:
+    raise ValueError(
+      "No API key found. Create a '.env' file in this root folder with "
+      "OPENROUTER_API_KEY=<your-key> or OPENAI_API_KEY=<your-key>, or pass --api-key <your-key>."
+    )
 
 
 def loadEnvironmentFiles() -> None:
@@ -849,6 +887,20 @@ def main(argv: list[str] | None = None) -> None:
   if getattr(agents, args.agent, None) is None:
     availableAgents = [name for name in dir(agents) if not name.startswith("_")]
     print(f"Error: Unknown agent '{args.agent}'. Available: {availableAgents}")
+    sys.exit(1)
+
+  # Resolve model args and validate credentials before prompting the user for symptoms.
+  mergedModelArgs = resolveModelArgs(
+    modelName=args.model,
+    rawModelArgs=args.model_args,
+    configModelArgs=config.agent_model_args,
+    apiKey=args.api_key,
+    baseUrl=args.base_url,
+  )
+  try:
+    validateModelCredentials(args.model, mergedModelArgs)
+  except ValueError as credentialError:
+    print(f"Configuration error: {credentialError}", file=sys.stderr)
     sys.exit(1)
 
   print(f"Starting SDBench Interactive Mode (agent={args.agent}, model={args.model})")

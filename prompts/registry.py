@@ -3,7 +3,7 @@ import pathlib
 from typing import Any, TypedDict
 import yaml
 
-from sdbench._paths import local_overrides_base
+from _paths import local_overrides_base
 
 
 class PromptTemplate(TypedDict):

@@ -8,10 +8,10 @@ import functools
 import traceback
 from typing import TYPE_CHECKING, Any
 
-from sdbench.config import CostingConfig
+from config import CostingConfig
 
 if TYPE_CHECKING:
-    from sdbench.costing.cost_types import CostEstimate
+    from costing.cost_types import CostEstimate
 
 
 @functools.cache

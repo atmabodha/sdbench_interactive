@@ -12,11 +12,15 @@ from typing import Any, Iterable
 
 from tqdm import tqdm
 
-from sdbench import agents, case_data, gatekeeper, judge, models
-from sdbench.azure_storage import validate_azure_access, write_output_file
-from sdbench.config import AgentConfig, CostingConfig, HarnessConfig, SDBenchConfig
-from sdbench.costing.costing import estimate_costs
-from sdbench.models import ModelCreateChatCompletion
+import agents
+import case_data
+import gatekeeper
+import judge
+import models
+from azure_storage import validate_azure_access, write_output_file
+from config import AgentConfig, CostingConfig, HarnessConfig, SDBenchConfig
+from costing.costing import estimate_costs
+from models import ModelCreateChatCompletion
 
 __all__ = [
     "run_case",
@@ -460,7 +464,7 @@ def run(config: HarnessConfig, json_dir: str, completed_cases: set[tuple[str, in
     model_args = {**config.model_args}
 
     if config.sdbench.costing_method == "unified_cpt_llm":
-        from sdbench.costing.costing import get_cpt_fuzzy_matcher
+        from costing.costing import get_cpt_fuzzy_matcher
 
         print("Pre-initializing grounded (unified_cpt_llm) cost matcher before starting workers...")
         if get_cpt_fuzzy_matcher(CostingConfig.from_sdbench_config(config.sdbench)) is None:

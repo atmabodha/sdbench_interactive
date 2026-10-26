@@ -112,7 +112,7 @@ import os
 import pathlib
 from typing import Any, TypedDict
 
-from sdbench._paths import sdbench_data_path
+from _paths import sdbench_data_path
 
 
 class CaseData(TypedDict):

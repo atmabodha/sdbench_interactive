@@ -3,7 +3,7 @@ import sys
 
 import dotenv
 
-from sdbench import case_data
+import case_data
 
 
 def main():

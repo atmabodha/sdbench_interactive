@@ -4,9 +4,9 @@ import pprint
 
 import dotenv
 
-from sdbench import case_data
-from sdbench.config import get_sdbench_config
-from sdbench.harness import run_case
+import case_data
+from config import get_sdbench_config
+from harness import run_case
 
 
 def main():

@@ -1,8 +1,8 @@
 from typing import TYPE_CHECKING, Any, TypedDict
 
 if TYPE_CHECKING:
-    from sdbench.costing import cpt_matcher  # pyright: ignore[reportAttributeAccessIssue]
-    from sdbench.models import ChatCompletionMessageParam
+    from costing import cpt_matcher  # pyright: ignore[reportAttributeAccessIssue]
+    from models import ChatCompletionMessageParam
 
 
 class CostMethodEstimate(TypedDict, total=False):

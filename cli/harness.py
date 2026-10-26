@@ -13,10 +13,10 @@ from pathlib import Path
 
 import dotenv
 
-from sdbench.azure_storage import write_output_file
-from sdbench.config import HarnessConfig
-from sdbench.harness import run, scan_completed_cases
-from sdbench.reporting import process_results
+from azure_storage import write_output_file
+from config import HarnessConfig
+from harness import run, scan_completed_cases
+from reporting import process_results
 
 
 def _resolve_run_owner() -> str:

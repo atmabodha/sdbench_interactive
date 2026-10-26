@@ -3,8 +3,9 @@ import sys
 
 import dotenv
 
-from sdbench import case_data, judge
-from sdbench.config import SDBenchConfig
+import case_data
+import judge
+from config import SDBenchConfig
 
 
 def main():

@@ -7,7 +7,8 @@ import json
 import os
 from typing import Any
 
-from sdbench._paths import local_overrides_base, sdbench_data_path
+import pathlib
+from _paths import local_overrides_base, sdbench_data_path
 
 
 def costing_data_dir() -> str:
@@ -583,7 +584,7 @@ def _get_override_config_module():
         return None
 
     config_path = local_base / "config.py"
-    if not config_path.is_file():
+    if not config_path.is_file() or config_path.resolve() == pathlib.Path(__file__).resolve():
         return None
 
     # Memoized by resolved path so the override is executed (and logged) once, matching

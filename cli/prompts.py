@@ -2,7 +2,7 @@ import argparse
 
 import dotenv
 
-from sdbench.prompts.registry import load_template
+from prompts.registry import load_template
 
 
 def main():

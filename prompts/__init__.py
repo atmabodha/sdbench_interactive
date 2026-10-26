@@ -50,6 +50,6 @@ Command Line Interface:
     This will print both the system and user templates for the specified prompt.
 """
 
-from sdbench.prompts.registry import PromptTemplate, load_template
+from prompts.registry import PromptTemplate, load_template
 
 __all__ = ["PromptTemplate", "load_template"]

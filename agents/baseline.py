@@ -1,9 +1,9 @@
 import re
 from typing import Any
 
-from sdbench.config import AgentConfig
-from sdbench.gatekeeper import TestRunner
-from sdbench.models import ChatCompletionMessageParam, ModelCreateChatCompletion
+from config import AgentConfig
+from gatekeeper import TestRunner
+from models import ChatCompletionMessageParam, ModelCreateChatCompletion
 
 
 def extract_test_list_from_response(response_content: str) -> list[str]:

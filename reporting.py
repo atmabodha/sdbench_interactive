@@ -14,9 +14,9 @@ import html
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
-from sdbench import case_data
-from sdbench.config import HarnessConfig
-from sdbench.azure_storage import write_output_file
+import case_data
+from config import HarnessConfig
+from azure_storage import write_output_file
 
 
 def determine_common_method(results: List[Dict[str, Any]]) -> str:

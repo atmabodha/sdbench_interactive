@@ -2,8 +2,10 @@ from dataclasses import dataclass
 import re
 from typing import Any, TypedDict
 
-from sdbench import case_data, models, prompts
-from sdbench.config import SDBenchConfig
+import case_data
+import models
+import prompts
+from config import SDBenchConfig
 
 
 @dataclass(frozen=True)

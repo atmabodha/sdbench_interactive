@@ -4,10 +4,10 @@ from pathlib import Path
 import sys
 from typing import Any, Protocol, runtime_checkable
 
-from sdbench._paths import local_overrides_base
-from sdbench.config import AgentConfig
-from sdbench.gatekeeper import TestRunner
-from sdbench.models import ModelCreateChatCompletion
+from _paths import local_overrides_base
+from config import AgentConfig
+from gatekeeper import TestRunner
+from models import ModelCreateChatCompletion
 
 
 @runtime_checkable

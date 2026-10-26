@@ -17,10 +17,10 @@ import datetime
 import re
 from typing import Any, Iterable, Protocol, TypedDict
 
-from sdbench import prompts
-from sdbench.case_data import CaseData
-from sdbench.config import SDBenchConfig
-from sdbench.models import (
+import prompts
+from case_data import CaseData
+from config import SDBenchConfig
+from models import (
     ChatCompletionMessageParam,
     ModelCreateChatCompletion,
     as_assistant_message,

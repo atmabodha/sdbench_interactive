@@ -4,8 +4,9 @@ from typing import Any
 
 import dotenv
 
-from sdbench import case_data, config as sdbench_config
-from sdbench.gatekeeper import BatchTestRunner
+import case_data
+import config as sdbench_config
+from gatekeeper import BatchTestRunner
 
 
 def main():

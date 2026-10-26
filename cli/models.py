@@ -6,7 +6,7 @@ from typing import Any
 
 import dotenv
 
-from sdbench import models
+import models
 
 
 def main():

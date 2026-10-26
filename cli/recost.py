@@ -51,9 +51,9 @@ from typing import Any
 import dotenv
 from tqdm import tqdm
 
-from sdbench.config import CostingConfig, SDBenchConfig
-from sdbench.costing.cost_types import CostsEstimate
-from sdbench.harness.harness import compute_agent_costs
+from config import CostingConfig, SDBenchConfig
+from costing.cost_types import CostsEstimate
+from harness.harness import compute_agent_costs
 
 # cost_details["method"] values, grouped into the categories we report on. "cpt_lookup"
 # is the grounded charge-master match; everything LLM-based is a fallback estimate.
@@ -75,7 +75,7 @@ def preflight_unified_costing(config: CostingConfig) -> None:
     # fuzzywuzzy). Check for them first so a missing extra produces a clear, actionable
     # message instead of an import traceback from deep inside the matcher.
     try:
-        import sdbench.costing.cpt_matcher  # noqa: F401
+        import costing.cpt_matcher  # noqa: F401
     except ImportError as e:
         sys.exit(
             "Error: grounded ('unified_cpt_llm') costing requires the optional 'cpt_costing' "
@@ -99,7 +99,7 @@ def preflight_unified_costing(config: CostingConfig) -> None:
     # Catch any other initialization problem up front (missing 'cpt_costing' extras,
     # embedding-build failure, bad costing model / API config). get_cpt_fuzzy_matcher
     # caches on the config, so this also warms the matcher the per-case loop will reuse.
-    from sdbench.costing.costing import get_cpt_fuzzy_matcher
+    from costing.costing import get_cpt_fuzzy_matcher
 
     print("Initializing grounded (unified_cpt_llm) costing backend...")
     if not os.path.exists(source_file + ".faiss.index"):

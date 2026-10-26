@@ -4,8 +4,8 @@ import sys
 
 import dotenv
 
-from sdbench.config import CostingConfig, SDBenchConfig
-from sdbench.costing.costing import estimate_costs
+from config import CostingConfig, SDBenchConfig
+from costing.costing import estimate_costs
 
 
 def main():

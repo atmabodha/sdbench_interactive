@@ -2,11 +2,11 @@ import re
 import time
 from typing import TYPE_CHECKING
 
-from sdbench.config import CostingConfig
-from sdbench.models import ChatCompletionMessageParam, as_assistant_message, create_chat_completion
+from config import CostingConfig
+from models import ChatCompletionMessageParam, as_assistant_message, create_chat_completion
 
 if TYPE_CHECKING:
-    from sdbench.costing.cost_types import CostMethodEstimate
+    from costing.cost_types import CostMethodEstimate
 
 
 def cost_test(test_name: str, config: CostingConfig) -> "CostMethodEstimate":

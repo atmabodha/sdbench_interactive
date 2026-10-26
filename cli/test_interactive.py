@@ -6,7 +6,7 @@ import os
 import unittest
 from unittest.mock import patch
 
-from sdbench.cli.interactive import (
+from cli.interactive import (
   InteractiveAgent,
   InteractiveTestRunner,
   ParsedAgentAction,
@@ -26,10 +26,11 @@ from sdbench.cli.interactive import (
   resolveDefaultModel,
   resolveModelArgs,
   runInteractiveSession,
+  validateModelCredentials,
 )
-from sdbench.config import SDBenchConfig
-from sdbench.gatekeeper import OrderTestResponse, TestRunnerResponse
-from sdbench.models import ChatCompletionMessageParam
+from config import SDBenchConfig
+from gatekeeper import OrderTestResponse, TestRunnerResponse
+from models import ChatCompletionMessageParam
 
 
 class MockChatCompletionFactory:
@@ -224,8 +225,17 @@ class TestInteractiveUtilities(unittest.TestCase):
       {"OPENAI_API_KEY": "sk-test", "OPENROUTER_API_KEY": ""},
       clear=False,
     ):
+      validateModelCredentials("o4-mini")
       llmFn = buildAgentLlm("o4-mini")
       self.assertTrue(callable(llmFn))
+
+    with patch.dict(
+      os.environ,
+      {"OPENAI_API_KEY": "", "OPENROUTER_API_KEY": ""},
+      clear=False,
+    ):
+      with self.assertRaises(ValueError):
+        validateModelCredentials("o4-mini")
 
 
 if __name__ == "__main__":

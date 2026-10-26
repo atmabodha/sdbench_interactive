@@ -18,7 +18,7 @@ from typing import Any
 
 import dotenv
 
-from sdbench.azure_storage import (
+from azure_storage import (
     download_blob,
     get_blob_service_client,
     list_blobs,
